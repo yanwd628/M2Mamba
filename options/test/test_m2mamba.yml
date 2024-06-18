@@ -1,0 +1,46 @@
+# general settings
+name: test_m2mamba
+model_type: HiFaceGANModel
+num_gpu: auto
+manual_seed: 0
+
+datasets:
+  val:
+    name: CelebA
+    type: PairedImageDataset
+    dataroot_lq: ../dataset/CelebA_test/degraded
+    dataroot_gt: ../dataset/CelebA_test/CelebA_HQ/validation_image
+    io_backend:
+      type: disk
+    #mean: [0.5, 0.5, 0.5]
+    #std: [0.5, 0.5, 0.5]
+    scale: 1
+
+
+# network structures
+network_g:
+  type: MSMambaNet
+  in_feature: 3
+  out_feature: 3
+  input_size: 512
+  CAB_num: 3
+  MSMM_num: [2, 2, 2, 2]
+  small_size: [3, 3, 3, 3]
+  large_size: [32, 16, 8, 8]
+  n_filters: 32
+  en_blocks: [2, 2, 2, 2]
+  mid_blocks: 4
+  de_blocks: [2, 2, 2, 2]
+  return_rgb: False
+# path
+path:
+  pretrain_network_g: ../models/net_g.pth
+  param_key_g: params
+  strict_load_g: ~
+  pretrain_network_d: ~
+  resume_state: ~
+
+# validation settings
+val:
+  save_img: true
+  suffix: ~

@@ -1,0 +1,76 @@
+# general settings
+name: test_m2mamba_wild
+model_type: HiFaceGANModel
+num_gpu: auto
+manual_seed: 0
+
+datasets:
+  test_1_LFW-Test:
+    name: LFW-Test
+    type: SingleImageDataset
+    dataroot_lq: ../dataset/Testset/LFW/
+    io_backend:
+      type: disk
+    #mean: [ 0.5, 0.5, 0.5 ]
+    #std: [ 0.5, 0.5, 0.5 ]
+    scale: 1
+
+  test_2_CelebChild:
+    name: CelebChild
+    type: SingleImageDataset
+    dataroot_lq: ../dataset/Testset/Child/
+    io_backend:
+      type: disk
+    #mean: [ 0.5, 0.5, 0.5 ]
+    #std: [ 0.5, 0.5, 0.5 ]
+    scale: 1
+
+  test_3_WebPhoto:
+    name: WebPhoto
+    type: SingleImageDataset
+    dataroot_lq: ../dataset/Testset/WebPhoto-Test/
+    io_backend:
+      type: disk
+    #mean: [ 0.5, 0.5, 0.5 ]
+    #std: [ 0.5, 0.5, 0.5 ]
+    scale: 1
+
+#  test_my:
+#    name: mytest
+#    type: SingleImageDataset
+#    dataroot_lq: ../dataset/Testset/mytest_mytest/
+#    io_backend:
+#      type: disk
+#    mean: [ 0.5, 0.5, 0.5 ]
+#    std: [ 0.5, 0.5, 0.5 ]
+#    scale: 1
+
+
+# network structures
+network_g:
+  type: MSMambaNet
+  in_feature: 3
+  out_feature: 3
+  input_size: 512
+  CAB_num: 3
+  MSMM_num: [2, 2, 2, 2]
+  small_size: [3, 3, 3, 3]
+  large_size: [32, 16, 8, 8]
+  n_filters: 32
+  en_blocks: [2, 2, 2, 2]
+  mid_blocks: 4
+  de_blocks: [2, 2, 2, 2]
+  return_rgb: False
+
+# path
+path:
+  pretrain_network_g: ../models/net_g.pth
+  param_key_g: params
+  strict_load_g: ~
+  pretrain_network_d: ~
+  resume_state: ~
+
+# validation settings
+val:
+  save_img: true
+  suffix: "test"
